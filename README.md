@@ -1,5 +1,14 @@
-# Cargotracker Regapp Kotlin Multiple Platform
-Cargotracker Event Register App Client rewritten in Kotlin Multiple Platform.
+# CargoTracker RegApp (KMP)
+
+This Cargotracker RegApp ports 
+[the original Cargotracker regapp](https://github.com/citerus/dddsample-regapp) from Eric's DDD book sample that was written in Swing and Spring to Kotlin Multiple Platform.
+
+I also created the following ports.
+
+* [Cargotrakcer RegApp - CDI/JavaFX](https://github.com/hantsy/cargotracker-regapp-javafx)
+* [Cargotradker RegApp - Quarkus](https://github.com/hantsy/cargotracker-regapp-quarkus-javafx)
+
+## Build
 
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop.
 
