@@ -1,9 +1,9 @@
 # CargoTracker RegApp (KMP)
 
 This Cargotracker RegApp ports 
-[the original Cargotracker regapp](https://github.com/citerus/dddsample-regapp) from Eric's DDD book sample that was written in Swing and Spring to Kotlin Multiple Platform.
+[the original Cargotracker regapp](https://github.com/citerus/dddsample-regapp) from Eric's DDD book sample codes were written in Swing and Spring to Kotlin Multiple Platform.
 
-I also created the following ports.
+I also created the following sister projects.
 
 * [Cargotrakcer RegApp - CDI/JavaFX](https://github.com/hantsy/cargotracker-regapp-javafx)
 * [Cargotradker RegApp - Quarkus](https://github.com/hantsy/cargotracker-regapp-quarkus-javafx)
