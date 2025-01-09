@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
+            implementation(project(":shared"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -72,6 +73,14 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+        }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
+
+        androidUnitTest.dependencies {
+            implementation(libs.kotlin.test.junit)
         }
     }
 }
