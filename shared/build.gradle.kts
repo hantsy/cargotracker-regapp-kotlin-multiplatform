@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -23,7 +27,25 @@ kotlin {
         }
     }
     jvm()
-    js()
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs(){
+        moduleName = "shared"
+        browser {
+            val rootDirPath = project.rootDir.path
+            val projectDirPath = project.projectDir.path
+            commonWebpackConfig {
+                outputFileName = "shared.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        // Serve sources to debug inside browser
+                        add(rootDirPath)
+                        add(projectDirPath)
+                    }
+                }
+            }
+        }
+    }
 
 // For iOS targets, this is also where you should
 // configure native binary output. For more information, see:
@@ -62,6 +84,7 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.coroutines.core)
@@ -73,16 +96,24 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.test)
                 implementation(libs.kotlinx.coroutines.test)
+                implementation(libs.ktor.client.mock)
             }
         }
         
         jvmMain{
             dependencies {
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.logback.classic)
             }
         }
 
-        jsMain{
+        jvmTest {
+            dependencies {
+                implementation(libs.mockk)
+            }
+        }
+
+        wasmJsMain{
             dependencies {
                 implementation(libs.ktor.client.js)
             }
@@ -95,6 +126,12 @@ kotlin {
                 // dependencies declared in commonMain.
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.client.okhttp)
+            }
+        }
+
+        getByName("androidHostTest"){
+            dependencies{
+                implementation(libs.slf4j.android)
             }
         }
 

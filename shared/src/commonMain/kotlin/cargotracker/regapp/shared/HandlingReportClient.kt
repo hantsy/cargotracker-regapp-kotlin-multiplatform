@@ -1,19 +1,20 @@
 package cargotracker.regapp.shared
 
+import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.accept
-import io.ktor.client.request.request
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
-import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.reflect.typeInfo
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class HandlingReport(
     val completionTime: String,
     val trackingId: String,
@@ -22,39 +23,52 @@ data class HandlingReport(
     val voyageNumber: String? = null,
 )
 
-@kotlinx.serialization.Serializable
+@Serializable
 sealed interface HandlingResponse {
 
-    class Success : HandlingResponse {
+    @Serializable
+    open class Success : HandlingResponse {
         override fun toString(): String {
             return "OK";
         }
     }
 
+    @Serializable
     data class Error(val message: String) : HandlingResponse
 }
 
-private const val DEFAULT_BASE_URL = "http://localhost:8080/cargo-tracker"
+ const val DEFAULT_HANDLING_REPORT_SERVICE_URL =
+    "http://localhost:8080/cargo-tracker/rest/handling/reports"
 
-private val client = httpClient() {
+private val httpClient = createHttpClient() {
     install(ContentNegotiation) {
         json(Json { isLenient = true; ignoreUnknownKeys = true })
     }
 }
 
-suspend fun submitHandlingReport(report: HandlingReport): HandlingResponse {
-    val baseUrl = getEnvVariable("HANDLING_REPORT_SERVICE_URL") ?: DEFAULT_BASE_URL
+class HandlingReportClient(val client: HttpClient) {
+    suspend fun submitReport(report: HandlingReport): HandlingResponse {
+        val handlingReportUrl = getEnvVariable("HANDLING_REPORT_SERVICE_URL")
+            ?: DEFAULT_HANDLING_REPORT_SERVICE_URL
 
-    val response = client.request("$baseUrl/rest/handling/reports") {
-        method = HttpMethod.Get
-        contentType(ContentType.Application.Json)
-        accept(ContentType.Application.Json)
-        setBody(report)
-    }
+        val response = client.post(handlingReportUrl) {
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            setBody(report)
+        }
 
-    return if (response.status == HttpStatusCode.OK) {
-        response.body(typeInfo<HandlingResponse.Success>())
-    } else {
-        response.body(typeInfo<HandlingResponse.Error>())
+        return if (response.status == HttpStatusCode.OK) {
+            response.body(typeInfo<HandlingResponse.Success>())
+        } else {
+            response.body(typeInfo<HandlingResponse.Error>())
+        }
     }
+}
+
+suspend fun submitHandlingReport(
+    report: HandlingReport,
+    block: HandlingResponse.() -> Unit = {},
+) {
+    val response = HandlingReportClient(httpClient).submitReport(report)
+    block.invoke(response)
 }

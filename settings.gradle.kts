@@ -1,4 +1,4 @@
-rootProject.name = "KotlinCargotrackerRegapp"
+rootProject.name = "CargoTrackerRegapp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

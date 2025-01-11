@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.mockmp)
 }
 
 kotlin {
@@ -60,7 +62,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            implementation(project(":shared"))
+            //implementation(project(":shared"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -125,5 +127,11 @@ compose.desktop {
             packageName = "cargotracker.regapp"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+mockmp {
+    onTest {
+        withHelper()
     }
 }

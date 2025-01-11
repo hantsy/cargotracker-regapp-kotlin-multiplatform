@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-import kotlincargotrackerregapp.composeapp.generated.resources.Res
-import kotlincargotrackerregapp.composeapp.generated.resources.compose_multiplatform
+import cargotrackerregapp.composeapp.generated.resources.Res
+import cargotrackerregapp.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
@@ -26,7 +26,7 @@ fun App() {
                 Text("Click me!")
             }
             AnimatedVisibility(showContent) {
-                val greeting = remember { RamdonUUID().greet() }
+                val greeting = remember { randomUUID() }
                 Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
                     Text("Compose: $greeting")
