@@ -31,6 +31,7 @@ class JvmHandlingReportClientTest {
         coEvery { mockResponse.status } returns HttpStatusCode.OK
         coEvery { mockResponse.body<HandlingResponse.Success>(any(TypeInfo::class)) } returns HandlingResponse.Success()
         val mockFunc: HttpRequestBuilder.() -> Unit = mockk(relaxed = true)
+
         coEvery { mockFunc.invoke(any())} returns Unit
 
         coEvery { mockHttpClient.post(any<String>(), mockFunc) } returns mockResponse
