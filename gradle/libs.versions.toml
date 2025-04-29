@@ -22,7 +22,7 @@ ktor = "3.1.2"
 coroutines = "1.10.2"
 logback = "1.5.18"
 slf4j = "1.7.36" # for android
-mockk = "1.14.0"
+mockk = "1.14.2"
 ksp = "2.1.20-2.0.0"
 mockmp = "2.0.2"
 
