@@ -14,7 +14,7 @@ kotlin {
 // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "cargotracker.regapp.shared"
-        compileSdk = 35
+        compileSdk = 36
         minSdk = 24
 
         withHostTestBuilder {
@@ -30,7 +30,7 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs(){
-        moduleName = "shared"
+        outputModuleName = "shared"
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
