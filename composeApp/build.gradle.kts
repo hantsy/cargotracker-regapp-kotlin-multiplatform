@@ -60,7 +60,7 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            //implementation(project(":shared"))
+            implementation(project(":shared"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -89,7 +89,7 @@ kotlin {
 
 android {
     namespace = "cargotracker.regapp"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdkVersion(libs.versions.android.compileSdk.get().toInt())
 
     defaultConfig {
         applicationId = "cargotracker.regapp"
