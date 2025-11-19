@@ -22,7 +22,7 @@ ktor = "3.3.2"
 logback = "1.5.19"
 slf4j = "1.7.36" # for android
 mockk = "1.14.6"
-ksp = "2.2.20-2.0.3"
+ksp = "2.3.2"
 mockmp = "2.0.2"
 
 [libraries]
