@@ -21,7 +21,7 @@ core = "1.7.0"
 ktor = "3.3.3"
 logback = "1.5.21"
 slf4j = "1.7.36" # for android
-mockk = "1.14.6"
+mockk = "1.14.7"
 ksp = "2.3.4"
 mockmp = "2.0.2"
 
