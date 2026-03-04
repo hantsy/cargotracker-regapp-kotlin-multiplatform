@@ -21,7 +21,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.shared)
+            implementation(projects.sharedUI)
             implementation(libs.compose.ui)
             implementation(npm("@js-joda/timezone", "2.22.0"))
         }

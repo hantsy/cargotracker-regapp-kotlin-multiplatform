@@ -11,7 +11,7 @@ kotlin {
     
     sourceSets {
         jvmMain.dependencies {
-            implementation(projects.shared)
+            implementation(projects.sharedUI)
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }

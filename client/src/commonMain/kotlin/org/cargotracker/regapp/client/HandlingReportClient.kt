@@ -16,12 +16,6 @@ import kotlinx.serialization.json.Json
 const val DEFAULT_HANDLING_REPORT_SERVICE_URL =
     "http://localhost:8080/cargo-tracker/rest/handling/reports"
 
-private val httpClient = createHttpClient {
-    install(ContentNegotiation) {
-        json(Json { isLenient = true; ignoreUnknownKeys = true })
-    }
-}
-
 class HandlingReportClient(private val client: HttpClient) {
     suspend fun submitReport(report: HandlingReport): HandlingResponse {
         val handlingReportUrl = getEnvVariable("HANDLING_REPORT_SERVICE_URL")
@@ -36,14 +30,20 @@ class HandlingReportClient(private val client: HttpClient) {
         return if (response.status == HttpStatusCode.OK) {
             HandlingResponse.Success
         } else {
-            response.body(typeInfo<HandlingResponse.Error>()) as HandlingResponse.Error
+            response.body(typeInfo<HandlingResponse.Error>())
         }
+    }
+}
+
+private val httpClient = createHttpClient {
+    install(ContentNegotiation) {
+        json(Json { isLenient = true; ignoreUnknownKeys = true })
     }
 }
 
 suspend fun submitHandlingReport(
     report: HandlingReport,
-    block: HandlingResponse.() -> Unit = {},
+    block: (HandlingResponse) -> Unit = {},
 ) {
     val response = HandlingReportClient(httpClient).submitReport(report)
     block.invoke(response)

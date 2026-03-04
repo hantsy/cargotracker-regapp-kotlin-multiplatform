@@ -1,47 +1,67 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM).
+This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM), Web and more.
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+* [/sharedUI](./sharedUI/src) holds code that’s shared across all your Kotlin modules. The `sharedUI` module replaces the
+  former `composeApp` hierarchy and contains multiple source sets:
+  - [commonMain](./sharedUI/src/commonMain/kotlin) for code used on every platform.
+  - Platform‑specific folders (iosMain, androidMain, jvmMain, jsMain, etc.) for next‑level customizations.
+    For example, any iOS‑only APIs should go into `iosMain`, while desktop (JVM) logic belongs in `jvmMain`.
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+* [/client](./client) defines the HTTP client layer for remote API interaction. Use this module to
+  encapsulate networking, serialization, and request/response models independent of UI concerns.
+
+* [/webApp](./webApp) contains the web application front end. It hosts your Compose for Web UI or other
+  browser‑based code and depends on `sharedUI` for business logic.
+
+* [/desktopApp](./desktopApp) provides a desktop (JVM) application entry point. It typically uses
+  Compose for Desktop and pulls shared logic from `sharedUI`.
+
+* [/androidApp](./androidApp) bundles the Android application sources, layouts, and Gradle setup.
+
+* [/iosApp](./iosApp/iosApp) still contains the iOS application launcher. If you’re blending in SwiftUI or
+  other native views, this is the place for those components.
+
 
 ### Build and Run Android Application
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
+Use the IDE's run configurations or execute via Gradle:
+- macOS/Linux
   ```shell
-  ./gradlew :composeApp:assembleDebug
+  ./gradlew :androidApp:assembleDebug
   ```
-- on Windows
+- Windows
   ```shell
-  .\gradlew.bat :composeApp:assembleDebug
+  .\gradlew.bat :androidApp:assembleDebug
   ```
 
 ### Build and Run Desktop (JVM) Application
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
+Launch using your IDE or from the command line:
+- macOS/Linux
   ```shell
-  ./gradlew :composeApp:run
+  ./gradlew :desktopApp:run
   ```
-- on Windows
+- Windows
   ```shell
-  .\gradlew.bat :composeApp:run
+  .\gradlew.bat :desktopApp:run
+  ```
+
+### Build and Run Web Application
+
+If your webApp module supports `compose-web`, start it with:
+- macOS/Linux
+  ```shell
+  ./gradlew :webApp:browserDevelopmentRun
+  ```
+- Windows
+  ```shell
+  .\gradlew.bat :webApp:browserDevelopmentRun
   ```
 
 ### Build and Run iOS Application
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+Open the [/iosApp](./iosApp) directory in Xcode or use the IDE's iOS run config. Compile and run
+from Xcode as you normally would.
+
 
 ---
 
