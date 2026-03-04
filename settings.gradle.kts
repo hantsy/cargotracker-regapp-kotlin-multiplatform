@@ -1,4 +1,4 @@
-rootProject.name = "CargoTrackerRegapp"
+rootProject.name = "CargotrackerRegappKMP"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -28,5 +28,12 @@ dependencyResolutionManagement {
     }
 }
 
-include(":composeApp")
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 include(":shared")
+include(":androidApp")
+include(":desktopApp")
+include(":webApp")
+include(":client")
