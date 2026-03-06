@@ -1,79 +1,80 @@
-# CargoTracker RegApp(Kotlin Multiplatform)
+# CargoTracker RegApp (Kotlin Multiplatform)
 
-[The original DDD book sample regapp](https://github.com/citerus/dddsample-regapp) was written in Swing and Spring, which was used for submitting handling events to the [cargotracker core system](https://github.com/hantsy/cargotracker) (forked from [eclipse-ee4j/cargotracker](https://github.com/eclipse-ee4j//cargotracker)).
+The [original sample application](https://github.com/citerus/dddsample-regapp) from the DDD book was implemented with Swing and Spring. It served as a front end for submitting event handling requests to the [CargoTracker core system](https://github.com/hantsy/cargotracker), itself a fork of [eclipse-ee4j/cargotracker](https://github.com/eclipse-ee4j/cargotracker).
 
-Previously, I have created two variants with JavaFX and Quarkus JavaFX:
-* [Cargotacker Regapp(JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
-* [Cargotacker Regapp(Quarkus JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
 
-This project aims to rewrite the same function in Kotlin Multiplatform, targeting Android, iOS, Desktop (JVM), Web, and more.
+In the past I developed two JavaFX–based variants:
+
+* [CargoTracker RegApp (JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
+* [CargoTracker RegApp (Quarkus JavaFX)](https://github.com/hantsy/cargotracker-regapp-quarkus-javafx)
+
+The goal of the present project is to re‑implement the same functionality using Kotlin Multiplatform, with targets including Android, iOS, desktop JVM, the web, and potentially additional platforms.
 
 >[!WARNING]
-> I am a newbie to Kotlin Multiplatform. The code may look ugly, and it was mainly written with the help of Google Gimini after I read the [Quick Start](https://kotlinlang.org/docs/multiplatform/quickstart.html) guide. 
-
-* [/sharedUI](./sharedUI/src) holds code that’s shared across all your Kotlin modules. The `sharedUI` module replaces the
-  former `composeApp` hierarchy and contains multiple source sets:
-  - [commonMain](./sharedUI/src/commonMain/kotlin) for code used on every platform.
-  - Platform‑specific folders (iosMain, androidMain, jvmMain, jsMain, etc.) for next‑level customizations.
-    For example, any iOS‑only APIs should go into `iosMain`, while desktop (JVM) logic belongs in `jvmMain`.
-
-* [/client](./client) defines the HTTP client layer for remote API interaction. Use this module to
-  encapsulate networking, serialization, and request/response models independent of UI concerns.
-
-* [/webApp](./webApp) contains the web application front end. It hosts your Compose for Web UI or other
-  browser‑based code and depends on `sharedUI` for business logic.
-
-* [/desktopApp](./desktopApp) provides a desktop (JVM) application entry point. It typically uses
-  Compose for Desktop and pulls shared logic from `sharedUI`.
-
-* [/androidApp](./androidApp) bundles the Android application sources, layouts, and Gradle setup.
-
-* [/iosApp](./iosApp/iosApp) still contains the iOS application launcher. If you’re blending in SwiftUI or
-  other native views, this is the place for those components.
+> I am new to Kotlin Multiplatform. The code may be inelegant; much of it was generated with the aid of Google Gemini after following the [Quick Start](https://kotlinlang.org/docs/multiplatform/quickstart.html) guide.
 
 
-### Build and Run Android Application
+## Project Structure
 
-Use the IDE's run configurations or execute via Gradle:
-- macOS/Linux
-  ```shell
-  ./gradlew :androidApp:assembleDebug
-  ```
-- Windows
-  ```shell
-  .\gradlew.bat :androidApp:assembleDebug
-  ```
+* **`sharedUI`** (`./sharedUI/src`) contains code shared across all Kotlin modules. This module replaces the
+  previous `composeApp` hierarchy and is organized into multiple source sets:
+  * `commonMain` (`./sharedUI/src/commonMain/kotlin`) for platform‑agnostic code.
+  * Platform‑specific sets (`iosMain`, `androidMain`, `jvmMain`, `jsMain`, etc.) for platform‑dependent APIs. For
+    instance, iOS‑specific logic belongs in `iosMain`, whereas desktop (JVM) code lives in `jvmMain`.
 
-### Build and Run Desktop (JVM) Application
+* **`client`** (`./client`) implements the HTTP client layer used for remote API calls. This module encapsulates
+  networking, serialization, and request/response models, keeping UI concerns separate.
 
-Launch using your IDE or from the command line:
-- macOS/Linux
-  ```shell
-  ./gradlew :desktopApp:run
-  ```
-- Windows
-  ```shell
-  .\gradlew.bat :desktopApp:run
-  ```
+* **`webApp`** (`./webApp`) hosts the web front end, typically built with Compose for Web or other browser‑based
+  technologies. It depends on `sharedUI` for shared business logic.
 
-### Build and Run Web Application
+* **`desktopApp`** (`./desktopApp`) provides the desktop (JVM) application entry point, usually employing
+  Compose for Desktop and reusing shared logic from `sharedUI`.
 
-If your webApp module supports `compose-web`, start it with:
-- macOS/Linux
-  ```shell
-  ./gradlew :webApp:browserDevelopmentRun
-  ```
-- Windows
-  ```shell
-  .\gradlew.bat :webApp:browserDevelopmentRun
-  ```
+* **`androidApp`** (`./androidApp`) contains the Android application code—sources, layouts, and Gradle
+  configuration.
 
-### Build and Run iOS Application
+* **`iosApp`** (`./iosApp`) holds the iOS application launcher. Native SwiftUI views or other platform
+  components are added here as needed.
 
-Open the [/iosApp](./iosApp) directory in Xcode or use the IDE's iOS run config. Compile and run
-from Xcode as you normally would.
+### Building and Running
 
+#### Android
+Use the IDE run configuration or execute Gradle directly:
 
----
+```bash
+# macOS/Linux
+./gradlew :androidApp:assembleDebug
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+# Windows
+.\gradlew.bat :androidApp:assembleDebug
+```
+
+#### Desktop (JVM)
+
+Start the desktop application via your IDE or the command line:
+
+```bash
+# macOS/Linux
+./gradlew :desktopApp:run
+
+# Windows
+.\gradlew.bat :desktopApp:run
+```
+
+#### Web
+
+For the `webApp` module (Compose for Web), launch the development server:
+
+```bash
+# macOS/Linux
+./gradlew :webApp:browserDevelopmentRun
+
+# Windows
+.\gradlew.bat :webApp:browserDevelopmentRun
+```
+
+#### iOS
+
+Open the `iosApp` directory in Xcode or use an IDE run configuration for iOS. Build and run it from
+Xcode as usual.
