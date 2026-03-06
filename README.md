@@ -1,4 +1,15 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Desktop (JVM), Web and more.
+# CargoTracker RegApp(Kotlin Multiplatform)
+
+[The original DDD book sample regapp](https://github.com/citerus/dddsample-regapp) was written in Swing and Spring, which was used for submitting handling events to the [cargotracker core system](https://github.com/hantsy/cargotracker) (forked from [eclipse-ee4j/cargotracker](https://github.com/eclipse-ee4j//cargotracker)).
+
+Previously, I have created two variants with JavaFX and Quarkus JavaFX:
+* [Cargotacker Regapp(JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
+* [Cargotacker Regapp(Quarkus JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
+
+This project aims to rewrite the same function in Kotlin Multiplatform, targeting Android, iOS, Desktop (JVM), Web, and more.
+
+>[!WARNING]
+> I am a newbie to Kotlin Multiplatform. The code may look ugly, and it was mainly written with the help of Google Gimini after I read the [Quick Start](https://kotlinlang.org/docs/multiplatform/quickstart.html) guide. 
 
 * [/sharedUI](./sharedUI/src) holds code that’s shared across all your Kotlin modules. The `sharedUI` module replaces the
   former `composeApp` hierarchy and contains multiple source sets:
