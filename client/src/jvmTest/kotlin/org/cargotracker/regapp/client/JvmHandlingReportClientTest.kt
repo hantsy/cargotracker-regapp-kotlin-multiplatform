@@ -30,7 +30,7 @@ class JvmHandlingReportClientTest {
                 json(Json { isLenient = true; ignoreUnknownKeys = true })
             }
         }
-        client = HandlingReportClient(httpClient)
+        client = HandlingReportClient(httpClient, baseUrl = server.url("/").toString())
     }
 
     @After
@@ -50,11 +50,8 @@ class JvmHandlingReportClientTest {
     fun testSubmitReport() = runBlocking {
         server.enqueue(MockResponse().setResponseCode(200))
 
-        // System property used for JVM platform getEnvVariable implementation
-        System.setProperty("HANDLING_REPORT_SERVICE_URL", server.url("/").toString())
-
         val result = client.submitReport(report)
-        
+
         assertTrue(result is HandlingResponse.Success)
 
         val recordedRequest = server.takeRequest()
@@ -71,10 +68,8 @@ class JvmHandlingReportClientTest {
                 .setHeader("Content-Type", "application/json")
         )
 
-        System.setProperty("HANDLING_REPORT_SERVICE_URL", server.url("/").toString())
-
         val result = client.submitReport(report)
-        
+
         assertTrue(result is HandlingResponse.Error)
         assertEquals("err", result.message)
     }

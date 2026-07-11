@@ -10,12 +10,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import org.cargotracker.regapp.components.MaterialIcons
-import org.cargotracker.regapp.components.MaterialIcon
+import org.jetbrains.compose.resources.DrawableResource
+
+private const val GITHUB_URL = "https://github.com/hantsy/cargotracker-regapp-kotlin-multiplatform/"
+private const val LINKEDIN_URL = "https://www.linkedin.com/in/hantsy"
+private const val TWITTER_URL = "https://twitter.com/@hantsy"
+
+private data class SocialLink(
+    val icon: DrawableResource,
+    val contentDescription: String,
+    val url: String,
+)
+
+private val socialLinks = listOf(
+    SocialLink(SocialIcons.GitHub, "GitHub", GITHUB_URL),
+    SocialLink(SocialIcons.LinkedIn, "LinkedIn", LINKEDIN_URL),
+    SocialLink(SocialIcons.Twitter, "Twitter", TWITTER_URL),
+)
 
 @Composable
 fun Footer() {
     val uriHandler = LocalUriHandler.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -29,27 +45,13 @@ fun Footer() {
                 .fillMaxWidth()
                 .padding(vertical = 16.dp)
         ) {
-            MaterialIcon(
-                icon = MaterialIcons.GitHub,
-                modifier = Modifier
-                    .clickable {
-                        uriHandler.openUri("https://github.com/hantsy/cargotracker-regapp-kotlin-multiplatform/")
-                    }
-            )
-            MaterialIcon(
-                icon = MaterialIcons.LinkedIn,
-                modifier = Modifier
-                    .clickable {
-                        uriHandler.openUri("https://www.linkedin.com/in/hantsy")
-                    }
-            )
-            MaterialIcon(
-                icon = MaterialIcons.Twitter,
-                modifier = Modifier
-                    .clickable {
-                        uriHandler.openUri("https://twitter.com/@hantsy")
-                    }
-            )
+            socialLinks.forEach { link ->
+                SocialIcon(
+                    icon = link.icon,
+                    contentDescription = link.contentDescription,
+                    modifier = Modifier.clickable { uriHandler.openUri(link.url) }
+                )
+            }
         }
     }
 }

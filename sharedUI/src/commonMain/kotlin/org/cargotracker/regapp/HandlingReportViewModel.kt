@@ -14,78 +14,95 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.cargotracker.regapp.client.EventType
 import org.cargotracker.regapp.client.HandlingReport
+import org.cargotracker.regapp.client.HandlingReportClient
 import org.cargotracker.regapp.client.HandlingResponse
-import org.cargotracker.regapp.client.submitHandlingReport
 import kotlin.time.Clock
 
-class HandlingReportViewModel : ViewModel() {
-    private val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    var date by mutableStateOf(now.date)
-    var time by mutableStateOf(now.time)
-    var trackingId by mutableStateOf("")
-    var unLocode by mutableStateOf("")
-    var eventType by mutableStateOf<EventType?>(null)
-    var voyageNumber by mutableStateOf("")
-    var message by mutableStateOf("Please fill all fields")
-    var messageColor by mutableStateOf(Color.Gray)
-    var isSubmitting by mutableStateOf(false)
+data class HandlingReportUiState(
+    val date: LocalDate,
+    val time: LocalTime,
+    val trackingId: String = "",
+    val unLocode: String = "",
+    val eventType: EventType? = null,
+    val voyageNumber: String = "",
+    val message: String = "Please fill all fields",
+    val messageColor: Color = Color.Gray,
+    val isSubmitting: Boolean = false,
+) {
+    companion object {
+        fun create(clock: Clock = Clock.System) = clock.now()
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+            .let { now ->
+                HandlingReportUiState(
+                    date = now.date,
+                    time = now.time,
+                )
+            }
+    }
+}
 
-    fun updateDate(newDate: LocalDate) {
-        date = newDate
+class HandlingReportViewModel(
+    private val clock: Clock = Clock.System,
+) : ViewModel() {
+    var uiState by mutableStateOf(HandlingReportUiState.create(clock))
+        private set
+
+    fun updateDate(date: LocalDate) {
+        uiState = uiState.copy(date = date)
     }
 
-    fun updateTime(newTime: LocalTime) {
-        time = newTime
+    fun updateTime(time: LocalTime) {
+        uiState = uiState.copy(time = time)
     }
 
     fun updateTrackingId(id: String) {
-        trackingId = id
+        uiState = uiState.copy(trackingId = id)
     }
 
     fun updateUnLocode(locode: String) {
-        unLocode = locode
+        uiState = uiState.copy(unLocode = locode)
     }
 
     fun updateEventType(type: EventType?) {
-        eventType = type
+        uiState = uiState.copy(eventType = type)
     }
 
     fun updateVoyageNumber(number: String) {
-        voyageNumber = number
+        uiState = uiState.copy(voyageNumber = number)
     }
 
     fun submitReport() {
-        val type = eventType
+        val state = uiState
+        val type = state.eventType
 
-        if (trackingId.isBlank() || unLocode.isBlank() || type == null) {
-            message = "Please fill all fields"
-            messageColor = Color.Red
+        if (state.trackingId.isBlank() || state.unLocode.isBlank() || type == null) {
+            uiState = state.copy(message = "Please fill all fields", messageColor = Color.Red)
             return
         }
 
-        isSubmitting = true
+        uiState = state.copy(isSubmitting = true)
+
         val report = HandlingReport(
-            completionTime = LocalDateTime(date, time),
-            trackingId = trackingId,
+            completionTime = LocalDateTime(state.date, state.time),
+            trackingId = state.trackingId,
             eventType = type,
-            unLocode = unLocode,
-            voyageNumber = voyageNumber.takeIf { it.isNotBlank() }
+            unLocode = state.unLocode,
+            voyageNumber = state.voyageNumber.takeIf { it.isNotBlank() }
         )
 
         viewModelScope.launch {
-            submitHandlingReport(report) {
-                when (it) {
-                    is HandlingResponse.Success -> {
-                        message = "Submitted successfully!"
-                        messageColor = Color.Green
-                    }
-
-                    is HandlingResponse.Error -> {
-                        message = it.message
-                        messageColor = Color.Red
-                    }
-                }
-                isSubmitting = false
+            val response = HandlingReportClient.create().submitReport(report)
+            uiState = when (response) {
+                is HandlingResponse.Success -> uiState.copy(
+                    message = "Submitted successfully!",
+                    messageColor = Color.Green,
+                    isSubmitting = false,
+                )
+                is HandlingResponse.Error -> uiState.copy(
+                    message = response.message,
+                    messageColor = Color.Red,
+                    isSubmitting = false,
+                )
             }
         }
     }

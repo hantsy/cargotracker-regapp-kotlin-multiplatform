@@ -16,12 +16,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cargotrackerregappkmp.sharedui.generated.resources.Res
 import cargotrackerregappkmp.sharedui.generated.resources.logo
+import org.cargotracker.regapp.Route
 import org.jetbrains.compose.resources.painterResource
+
+private data class NavItem(val route: Route, val label: String)
+
+private val navItems = listOf(
+    NavItem(Route.Home, "Home"),
+    NavItem(Route.Greeting, "Greeting"),
+    NavItem(Route.HandlingReport, "Handling Report"),
+)
 
 @Composable
 fun Navbar(
-    currentRoute: String?,
-    onNavigate: (String) -> Unit
+    currentRoute: Route?,
+    onNavigate: (Route) -> Unit,
 ) {
     Surface(
         modifier = Modifier
@@ -31,28 +40,28 @@ fun Navbar(
                     brush = Brush.verticalGradient(
                         colors = listOf(Color.Black.copy(alpha = 0.15f), Color.Transparent),
                         startY = size.height,
-                        endY = size.height + 4.dp.toPx()
+                        endY = size.height + 4.dp.toPx(),
                     ),
                     topLeft = Offset(0f, size.height),
-                    size = Size(size.width, 4.dp.toPx())
+                    size = Size(size.width, 4.dp.toPx()),
                 )
             },
-        color = Color.White.copy(alpha = 0.5f)
+        color = Color.White.copy(alpha = 0.5f),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(
-                modifier = Modifier.clickable { onNavigate("home") },
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.clickable { onNavigate(Route.Home) },
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
                     painter = painterResource(Res.drawable.logo),
                     contentDescription = "Logo",
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(48.dp),
                 )
                 Spacer(Modifier.width(12.dp))
                 Column {
@@ -60,38 +69,25 @@ fun Navbar(
                         text = "CargoTracker",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = Color.DarkGray
+                        color = Color.DarkGray,
                     )
                 }
             }
-            
-            Spacer(Modifier.weight(1f))
-            
-            TextButton(
-                onClick = { onNavigate("home") },
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = if (currentRoute == "home") MaterialTheme.colorScheme.primary else Color.Gray
-                )
-            ) {
-                Text("Home")
-            }
 
-            TextButton(
-                onClick = { onNavigate("greeting") },
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = if (currentRoute == "greeting") MaterialTheme.colorScheme.primary else Color.Gray
-                )
-            ) {
-                Text("Greeting")
-            }
-            
-            TextButton(
-                onClick = { onNavigate("handling-report") },
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = if (currentRoute == "handling-report") MaterialTheme.colorScheme.primary else Color.Gray
-                )
-            ) {
-                Text("Handling Report")
+            Spacer(Modifier.weight(1f))
+
+            navItems.forEach { item ->
+                TextButton(
+                    onClick = { onNavigate(item.route) },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = if (currentRoute == item.route)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            Color.Gray
+                    ),
+                ) {
+                    Text(item.label)
+                }
             }
         }
     }

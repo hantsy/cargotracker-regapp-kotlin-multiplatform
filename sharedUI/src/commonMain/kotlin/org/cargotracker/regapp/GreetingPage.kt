@@ -69,7 +69,7 @@ fun GreetingPage() =
         }
     }
 
-fun todaysDate(): String {
+private fun todaysDate(): String {
     fun LocalDateTime.format() = toString().substringBefore('T')
 
     val now = Clock.System.now()
