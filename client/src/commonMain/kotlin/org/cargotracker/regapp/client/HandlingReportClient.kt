@@ -10,7 +10,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.util.reflect.typeInfo
 import kotlinx.serialization.json.Json
 
 const val DEFAULT_HANDLING_REPORT_SERVICE_URL =
@@ -31,7 +30,7 @@ class HandlingReportClient(
         return if (response.status == HttpStatusCode.OK) {
             HandlingResponse.Success
         } else {
-            response.body(typeInfo<HandlingResponse.Error>())
+            response.body<HandlingResponse.Error>()
         }
     }
 
