@@ -10,7 +10,7 @@ on:
       - reopened
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   # ── Android ──────────────────────────────────────────────────────────────────
@@ -30,12 +30,29 @@ jobs:
         run: ./gradlew :androidApp:assembleDebug
       - name: Run Android unit tests
         run: ./gradlew :androidApp:testDebugUnitTest
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v5
+        with:
+          name: android-debug-apk
+          path: androidApp/build/outputs/apk/debug/androidApp-debug.apk
 
-  # ── Desktop (JVM) ────────────────────────────────────────────────────────────
+  # ── Desktop ──────────────────────────────────────────────────────────────────
   desktop:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            package-task: packageDeb
+            artifact-name: desktop-linux-deb
+            artifact-path: desktopApp/build/compose/binaries/main/deb/*.deb
+          - os: windows-latest
+            package-task: packageMsi
+            artifact-name: desktop-windows-msi
+            artifact-path: desktopApp/build/compose/binaries/main/msi/*.msi
+          - os: macos-latest
+            package-task: packageDmg
+            artifact-name: desktop-macos-dmg
+            artifact-path: desktopApp/build/compose/binaries/main/dmg/*.dmg
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -45,10 +62,18 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
           cache: 'gradle'
+      - name: Install Linux packaging deps
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y fakeroot dpkg-dev
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      - name: Build Desktop distributable
-        run: ./gradlew :desktopApp:createDistributable
+      - name: Build Desktop native package
+        run: ./gradlew :desktopApp:${{ matrix.package-task }}
+      - name: Upload Desktop package
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: ${{ matrix.artifact-path }}
 
   # ── Web (JS + Wasm) ──────────────────────────────────────────────────────────
   web:
@@ -63,10 +88,20 @@ jobs:
           cache: 'gradle'
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      - name: Build JS (development)
-        run: ./gradlew :webApp:jsBrowserDevelopmentWebpack
-      - name: Build Wasm (development)
-        run: ./gradlew :webApp:wasmJsBrowserDevelopmentWebpack
+      - name: Build JS distribution
+        run: ./gradlew :webApp:jsBrowserDistribution
+      - name: Build Wasm distribution
+        run: ./gradlew :webApp:wasmJsBrowserDistribution
+      - name: Upload Web JS artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: web-js
+          path: webApp/build/dist/js/productionExecutable/
+      - name: Upload Web Wasm artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: web-wasm
+          path: webApp/build/dist/wasmJs/productionExecutable/
 
   # ── iOS ──────────────────────────────────────────────────────────────────────
   ios:
@@ -83,3 +118,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
       - name: Run iOS simulator tests
         run: ./gradlew :sharedUI:iosSimulatorArm64Test
+      - name: Build iOS framework
+        run: ./gradlew :sharedUI:linkDebugFrameworkIosSimulatorArm64
+      - name: Upload iOS framework
+        uses: actions/upload-artifact@v5
+        with:
+          name: ios-framework
+          path: sharedUI/build/bin/iosSimulatorArm64/debugFramework/
