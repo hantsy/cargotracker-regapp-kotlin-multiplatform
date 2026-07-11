@@ -11,6 +11,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import org.cargotracker.regapp.components.Footer
 import org.cargotracker.regapp.components.Navbar
 
@@ -26,9 +29,19 @@ sealed interface Route : NavKey {
     data object HandlingReport : Route
 }
 
+private val navConfig = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(Route.Home::class, Route.Home.serializer())
+            subclass(Route.Greeting::class, Route.Greeting.serializer())
+            subclass(Route.HandlingReport::class, Route.HandlingReport.serializer())
+        }
+    }
+}
+
 @Composable
 fun App() {
-    val backStack = rememberNavBackStack(SavedStateConfiguration.Companion.DEFAULT, Route.Home)
+    val backStack = rememberNavBackStack(navConfig, Route.Home)
 
     val currentRoute = backStack.lastOrNull() as? Route
 
