@@ -87,7 +87,7 @@ fun Navbar(
                     // Hamburger menu for narrow screens
                     Box {
                         IconButton(onClick = { menuExpanded = true }) {
-                            VectorIcon(MaterialIcons.Menu, contentDescription = "Menu")
+                            MaterialIcon(MaterialIcons.Menu, contentDescription = "Menu")
                         }
                         DropdownMenu(
                             expanded = menuExpanded,

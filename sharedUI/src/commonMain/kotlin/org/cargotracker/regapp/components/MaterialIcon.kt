@@ -28,22 +28,6 @@ fun MaterialIcon(
     tint: Color = Color.Unspecified,
 ) {
     Icon(
-        painter = painterResource(icon),
-        contentDescription = contentDescription,
-        modifier = modifier.size(size),
-        tint = tint,
-    )
-}
-
-@Composable
-fun VectorIcon(
-    icon: DrawableResource,
-    contentDescription: String?,
-    modifier: Modifier = Modifier,
-    size: Dp = 24.dp,
-    tint: Color = Color.Unspecified,
-) {
-    Icon(
         imageVector = vectorResource(icon),
         contentDescription = contentDescription,
         modifier = modifier.size(size),
