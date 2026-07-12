@@ -45,16 +45,12 @@ private fun DateTimePickerField(
             disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         trailingIcon = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = { showDatePicker = true }) {
-                    MaterialIcon(MaterialIcons.DateRange, contentDescription = "Pick date", size = 18.dp, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(Modifier.width(4.dp))
-                    Text("Date")
+            Row {
+                IconButton(onClick = { showDatePicker = true }) {
+                    MaterialIcon(MaterialIcons.DateRange, contentDescription = "Pick date", tint = MaterialTheme.colorScheme.primary)
                 }
-                TextButton(onClick = { showTimePicker = true }) {
-                    MaterialIcon(MaterialIcons.Schedule, contentDescription = "Pick time", size = 18.dp, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(Modifier.width(4.dp))
-                    Text("Time")
+                IconButton(onClick = { showTimePicker = true }) {
+                    MaterialIcon(MaterialIcons.Schedule, contentDescription = "Pick time", tint = MaterialTheme.colorScheme.primary)
                 }
             }
         },

@@ -17,7 +17,6 @@ import cargotrackerregappkmp.sharedui.generated.resources.ic_schedule_24px
 import cargotrackerregappkmp.sharedui.generated.resources.ic_twitter_24px
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun MaterialIcon(
@@ -28,7 +27,7 @@ fun MaterialIcon(
     tint: Color = Color.Unspecified,
 ) {
     Icon(
-        imageVector = vectorResource(icon),
+        painter = painterResource(icon),
         contentDescription = contentDescription,
         modifier = modifier.size(size),
         tint = tint,
