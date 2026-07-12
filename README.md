@@ -14,11 +14,13 @@ This project reimplements the same functionality using Kotlin Multiplatform, tar
 
 ## Screenshots
 
-| Android | Desktop | Web |
-|---------|---------|-----|
-| ![Android screenshot](docs/kmp-android.png) | ![Desktop screenshot](docs/kmp-desktop.png) | ![Web screenshot](docs/kmp-web.png) |
+![Android app running on Android Emulator](docs/kmp-android.png)
 
-![Web alternative view](docs/kmp-web0.png)
+![Desktop application running on Windows](docs/kmp-desktop.png)
+
+![Web application (Edge browser)](docs/kmp-web.png)
+
+![Web application (Edge browser) — alternative view](docs/kmp-web0.png)
 
 ## Project Structure
 
@@ -40,8 +42,6 @@ This project reimplements the same functionality using Kotlin Multiplatform, tar
 
 ### Android
 
-![Android screenshot](docs/kmp-android.png)
-
 Use the IDE run configuration or run Gradle directly:
 
 ```bash
@@ -54,8 +54,6 @@ Use the IDE run configuration or run Gradle directly:
 
 ### Desktop (JVM)
 
-![Desktop screenshot](docs/kmp-desktop.png)
-
 Launch the desktop application from your IDE or the command line:
 
 ```bash
@@ -67,10 +65,6 @@ Launch the desktop application from your IDE or the command line:
 ```
 
 ### Web
-
-![Web screenshot](docs/kmp-web.png)
-
-![Web alternative view](docs/kmp-web0.png)
 
 For the `webApp` module (Compose for Web), start the development server:
 
