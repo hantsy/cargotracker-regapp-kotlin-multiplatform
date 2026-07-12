@@ -85,5 +85,3 @@ For the `webApp` module (Compose for Web), start the development server:
 ### iOS
 
 Open the `iosApp` directory in Xcode or use an IDE run configuration for iOS. Build and run from Xcode as usual.
-
-> **Note:** No iOS screenshot is available yet.
