@@ -1,6 +1,7 @@
 package org.cargotracker.regapp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,30 +35,48 @@ fun HomePage() =
         contentAlignment = Alignment.Center,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .background(
-                    color = Color.Black.copy(alpha = 0.55f),
-                    shape = RoundedCornerShape(16.dp),
-                )
-                .padding(horizontal = 24.dp, vertical = 32.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(
-                text = "Welcome to CargoTracker",
-                style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = "A Kotlin Multiplatform application for submitting cargo handling " +
-                    "reports to the CargoTracker core system. " +
-                    "Built with Compose Multiplatform, targeting Android, iOS, desktop, and web.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.85f),
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = 12.dp),
-            )
+            // Title block
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color(0xFF1A3A5C).copy(alpha = 0.80f),
+                        shape = RoundedCornerShape(16.dp),
+                    )
+                    .padding(horizontal = 24.dp, vertical = 20.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "Welcome to CargoTracker",
+                    style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
+            // Description block
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color.Black.copy(alpha = 0.45f),
+                        shape = RoundedCornerShape(12.dp),
+                    )
+                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "A Kotlin Multiplatform application for submitting cargo handling " +
+                        "reports to the CargoTracker core system. " +
+                        "Built with Compose Multiplatform, targeting Android, iOS, desktop, and web.",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = Color.White.copy(alpha = 0.90f),
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
     }
