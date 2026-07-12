@@ -12,10 +12,12 @@ import cargotrackerregappkmp.sharedui.generated.resources.Res
 import cargotrackerregappkmp.sharedui.generated.resources.ic_date_range_24px
 import cargotrackerregappkmp.sharedui.generated.resources.ic_github_24px
 import cargotrackerregappkmp.sharedui.generated.resources.ic_linkedin_24px
+import cargotrackerregappkmp.sharedui.generated.resources.ic_menu_24px
 import cargotrackerregappkmp.sharedui.generated.resources.ic_schedule_24px
 import cargotrackerregappkmp.sharedui.generated.resources.ic_twitter_24px
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun MaterialIcon(
@@ -27,6 +29,22 @@ fun MaterialIcon(
 ) {
     Icon(
         painter = painterResource(icon),
+        contentDescription = contentDescription,
+        modifier = modifier.size(size),
+        tint = tint,
+    )
+}
+
+@Composable
+fun VectorIcon(
+    icon: DrawableResource,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    size: Dp = 24.dp,
+    tint: Color = Color.Unspecified,
+) {
+    Icon(
+        imageVector = vectorResource(icon),
         contentDescription = contentDescription,
         modifier = modifier.size(size),
         tint = tint,
@@ -49,6 +67,7 @@ fun SocialIcon(
 
 object MaterialIcons {
     val DateRange = Res.drawable.ic_date_range_24px
+    val Menu = Res.drawable.ic_menu_24px
     val Schedule = Res.drawable.ic_schedule_24px
 }
 
