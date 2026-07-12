@@ -16,11 +16,11 @@ import org.cargotracker.regapp.components.MaterialIcon
 import org.cargotracker.regapp.components.MaterialIcons
 import kotlin.time.Instant
 
-// ── DateTime picker field ────────────────────────────────────────────────────
+// ── Completion Time picker field ──────────────────────────────────────────────
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DateTimePickerField(
+private fun CompletionTimePickerField(
     date: LocalDate,
     time: LocalTime,
     onDateSelected: (LocalDate) -> Unit,
@@ -170,7 +170,7 @@ fun HandlingReportView(
                 modifier = Modifier.padding(24.dp).fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                DateTimePickerField(
+                CompletionTimePickerField(
                     date = state.date,
                     time = state.time,
                     onDateSelected = viewModel::updateDate,
