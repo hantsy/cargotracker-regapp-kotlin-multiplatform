@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -27,6 +27,8 @@ private val navItems = listOf(
     NavItem(Route.HandlingReport, "Handling Report"),
 )
 
+private const val NAV_BREAKPOINT = 600
+
 @Composable
 fun Navbar(
     currentRoute: Route?,
@@ -48,45 +50,81 @@ fun Navbar(
             },
         color = Color.White.copy(alpha = 0.5f),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 16.dp),
         ) {
+            val isCompact = maxWidth < NAV_BREAKPOINT.dp
+            var menuExpanded by remember { mutableStateOf(false) }
+
             Row(
-                modifier = Modifier.clickable { onNavigate(Route.Home) },
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = painterResource(Res.drawable.logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier.size(48.dp),
-                )
-                Spacer(Modifier.width(12.dp))
-                Column {
-                    Text(
-                        text = "CargoTracker",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.DarkGray,
-                    )
-                }
-            }
-
-            Spacer(Modifier.weight(1f))
-
-            navItems.forEach { item ->
-                TextButton(
-                    onClick = { onNavigate(item.route) },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = if (currentRoute == item.route)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            Color.Gray
-                    ),
+                // Logo + title
+                Row(
+                    modifier = Modifier.clickable { onNavigate(Route.Home) },
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(item.label)
+                    Image(
+                        painter = painterResource(Res.drawable.logo),
+                        contentDescription = "Logo",
+                        modifier = Modifier.size(48.dp),
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = "CargoTracker",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.DarkGray,
+                        )
+                    }
+                }
+
+                Spacer(Modifier.weight(1f))
+
+                if (isCompact) {
+                    // Hamburger menu for narrow screens
+                    TextButton(onClick = { menuExpanded = true }) {
+                        Text("☰", style = MaterialTheme.typography.headlineSmall)
+                    }
+                    DropdownMenu(
+                        expanded = menuExpanded,
+                        onDismissRequest = { menuExpanded = false },
+                    ) {
+                        navItems.forEach { item ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        item.label,
+                                        color = if (currentRoute == item.route)
+                                            MaterialTheme.colorScheme.primary
+                                        else
+                                            Color.Unspecified,
+                                    )
+                                },
+                                onClick = {
+                                    menuExpanded = false
+                                    onNavigate(item.route)
+                                },
+                            )
+                        }
+                    }
+                } else {
+                    // Full nav bar for wide screens
+                    navItems.forEach { item ->
+                        TextButton(
+                            onClick = { onNavigate(item.route) },
+                            colors = ButtonDefaults.textButtonColors(
+                                contentColor = if (currentRoute == item.route)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    Color.Gray
+                            ),
+                        ) {
+                            Text(item.label)
+                        }
+                    }
                 }
             }
         }
