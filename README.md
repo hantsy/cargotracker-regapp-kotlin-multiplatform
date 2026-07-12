@@ -14,13 +14,21 @@ This project reimplements the same functionality using Kotlin Multiplatform, tar
 
 ## Screenshots
 
-![Android app running on Android Emulator](docs/kmp-android.png)
+**Android app running on Android Emulator**
 
-![Desktop application running on Windows](docs/kmp-desktop.png)
+![Screenshot](docs/kmp-android.png)
 
-![Web application (Edge browser)](docs/kmp-web.png)
+**Desktop application running on Windows**
 
-![Web application (Edge browser) — alternative view](docs/kmp-web0.png)
+![Screenshot](docs/kmp-desktop.png)
+
+**Web application (Edge browser)**
+
+![Screenshot](docs/kmp-web.png)
+
+**Web application (Edge browser) — alternative view**
+
+![Screenshot](docs/kmp-web0.png)
 
 ## Project Structure
 
