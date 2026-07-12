@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,14 +39,10 @@ fun HomePage() =
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // Title block
+            // Title block — shrink-wraps to text
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(0xFF1A3A5C).copy(alpha = 0.80f),
-                        shape = RoundedCornerShape(16.dp),
-                    )
+                    .background(color = Color(0xFF1A3A5C).copy(alpha = 0.80f))
                     .padding(horizontal = 24.dp, vertical = 20.dp),
                 contentAlignment = Alignment.Center,
             ) {
@@ -58,14 +54,11 @@ fun HomePage() =
                 )
             }
 
-            // Description block
+            // Description block — constrained width, text wraps to 2-3 lines
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = Color.Black.copy(alpha = 0.45f),
-                        shape = RoundedCornerShape(12.dp),
-                    )
+                    .widthIn(min = 300.dp, max = 420.dp)
+                    .background(color = Color.Black.copy(alpha = 0.45f))
                     .padding(horizontal = 24.dp, vertical = 16.dp),
                 contentAlignment = Alignment.Center,
             ) {
