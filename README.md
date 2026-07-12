@@ -1,80 +1,89 @@
 # CargoTracker RegApp (Kotlin Multiplatform)
 
-The [original sample application](https://github.com/citerus/dddsample-regapp) from the DDD book was implemented with Swing and Spring. It served as a front end for submitting event handling requests to the [CargoTracker core system](https://github.com/hantsy/cargotracker), itself a fork of [eclipse-ee4j/cargotracker](https://github.com/eclipse-ee4j/cargotracker).
+The [original sample application](https://github.com/citerus/dddsample-regapp) from the DDD book was built with Swing and Spring. It served as a frontend for submitting handling event reports to the [CargoTracker core system](https://github.com/hantsy/cargotracker), which is itself a fork of [eclipse-ee4j/cargotracker](https://github.com/eclipse-ee4j/cargotracker).
 
-
-In the past I developed two JavaFX–based variants:
+I previously developed two JavaFX-based variants:
 
 * [CargoTracker RegApp (JavaFX)](https://github.com/hantsy/cargotracker-regapp-javafx)
 * [CargoTracker RegApp (Quarkus JavaFX)](https://github.com/hantsy/cargotracker-regapp-quarkus-javafx)
 
-The goal of the present project is to re‑implement the same functionality using Kotlin Multiplatform, with targets including Android, iOS, desktop JVM, the web, and potentially additional platforms.
+This project reimplements the same functionality using Kotlin Multiplatform, targeting Android, iOS, desktop (JVM), the web, and potentially other platforms down the road.
 
->[!WARNING]
-> I am new to Kotlin Multiplatform. The code may be inelegant; much of it was generated with the aid of Google Gemini after following the [Quick Start](https://kotlinlang.org/docs/multiplatform/quickstart.html) guide.
+> [!WARNING]
+> I'm new to Kotlin Multiplatform. The code may not be idiomatic — much of it was generated with the help of Google Gemini after working through the [Quick Start](https://kotlinlang.org/docs/multiplatform/quickstart.html) guide.
 
+## Screenshots
+
+| Android | Desktop | Web |
+|---------|---------|-----|
+| ![Android screenshot](docs/kmp-android.png) | ![Desktop screenshot](docs/kmp-desktop.png) | ![Web screenshot](docs/kmp-web.png) |
+
+![Web alternative view](docs/kmp-web0.png)
 
 ## Project Structure
 
-* **`sharedUI`** (`./sharedUI/src`) contains code shared across all Kotlin modules. This module replaces the
-  previous `composeApp` hierarchy and is organized into multiple source sets:
-  * `commonMain` (`./sharedUI/src/commonMain/kotlin`) for platform‑agnostic code.
-  * Platform‑specific sets (`iosMain`, `androidMain`, `jvmMain`, `jsMain`, etc.) for platform‑dependent APIs. For
-    instance, iOS‑specific logic belongs in `iosMain`, whereas desktop (JVM) code lives in `jvmMain`.
+* **`sharedUI`** (`./sharedUI/src`) — Contains code shared across all Kotlin modules. This module replaces the previous `composeApp` hierarchy and is organized into several source sets:
+  * `commonMain` (`./sharedUI/src/commonMain/kotlin`) — Platform-agnostic code.
+  * Platform-specific sets (`iosMain`, `androidMain`, `jvmMain`, `jsMain`, etc.) — Platform-dependent APIs. For example, iOS-specific logic lives in `iosMain`, while desktop (JVM) code goes in `jvmMain`.
 
-* **`client`** (`./client`) implements the HTTP client layer used for remote API calls. This module encapsulates
-  networking, serialization, and request/response models, keeping UI concerns separate.
+* **`client`** (`./client`) — Implements the HTTP client layer for remote API calls. This module encapsulates networking, serialization, and request/response models, keeping UI concerns separate.
 
-* **`webApp`** (`./webApp`) hosts the web front end, typically built with Compose for Web or other browser‑based
-  technologies. It depends on `sharedUI` for shared business logic.
+* **`webApp`** (`./webApp`) — Hosts the web frontend, built with Compose for Web. Depends on `sharedUI` for shared business logic.
 
-* **`desktopApp`** (`./desktopApp`) provides the desktop (JVM) application entry point, usually employing
-  Compose for Desktop and reusing shared logic from `sharedUI`.
+* **`desktopApp`** (`./desktopApp`) — Provides the desktop (JVM) application entry point, using Compose for Desktop and reusing shared logic from `sharedUI`.
 
-* **`androidApp`** (`./androidApp`) contains the Android application code—sources, layouts, and Gradle
-  configuration.
+* **`androidApp`** (`./androidApp`) — Contains the Android application: sources, layouts, and Gradle configuration.
 
-* **`iosApp`** (`./iosApp`) holds the iOS application launcher. Native SwiftUI views or other platform
-  components are added here as needed.
+* **`iosApp`** (`./iosApp`) — Holds the iOS application launcher. Native SwiftUI views or other platform-specific components are added here as needed.
 
-### Building and Running
+## Building and Running
 
-#### Android
-Use the IDE run configuration or execute Gradle directly:
+### Android
+
+![Android screenshot](docs/kmp-android.png)
+
+Use the IDE run configuration or run Gradle directly:
 
 ```bash
-# macOS/Linux
+# macOS / Linux
 ./gradlew :androidApp:assembleDebug
 
 # Windows
 .\gradlew.bat :androidApp:assembleDebug
 ```
 
-#### Desktop (JVM)
+### Desktop (JVM)
 
-Start the desktop application via your IDE or the command line:
+![Desktop screenshot](docs/kmp-desktop.png)
+
+Launch the desktop application from your IDE or the command line:
 
 ```bash
-# macOS/Linux
+# macOS / Linux
 ./gradlew :desktopApp:run
 
 # Windows
 .\gradlew.bat :desktopApp:run
 ```
 
-#### Web
+### Web
 
-For the `webApp` module (Compose for Web), launch the development server:
+![Web screenshot](docs/kmp-web.png)
+
+![Web alternative view](docs/kmp-web0.png)
+
+For the `webApp` module (Compose for Web), start the development server:
 
 ```bash
-# macOS/Linux
+# macOS / Linux
 ./gradlew :webApp:browserDevelopmentRun
 
 # Windows
 .\gradlew.bat :webApp:browserDevelopmentRun
 ```
 
-#### iOS
+### iOS
 
-Open the `iosApp` directory in Xcode or use an IDE run configuration for iOS. Build and run it from
-Xcode as usual.
+Open the `iosApp` directory in Xcode or use an IDE run configuration for iOS. Build and run from Xcode as usual.
+
+> **Note:** No iOS screenshot is available yet.
