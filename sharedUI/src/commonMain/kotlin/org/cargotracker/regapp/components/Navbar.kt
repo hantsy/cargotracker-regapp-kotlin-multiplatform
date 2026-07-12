@@ -85,29 +85,31 @@ fun Navbar(
 
                 if (isCompact) {
                     // Hamburger menu for narrow screens
-                    TextButton(onClick = { menuExpanded = true }) {
-                        Text("☰", style = MaterialTheme.typography.headlineSmall)
-                    }
-                    DropdownMenu(
-                        expanded = menuExpanded,
-                        onDismissRequest = { menuExpanded = false },
-                    ) {
-                        navItems.forEach { item ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        item.label,
-                                        color = if (currentRoute == item.route)
-                                            MaterialTheme.colorScheme.primary
-                                        else
-                                            Color.Unspecified,
-                                    )
-                                },
-                                onClick = {
-                                    menuExpanded = false
-                                    onNavigate(item.route)
-                                },
-                            )
+                    Box {
+                        TextButton(onClick = { menuExpanded = true }) {
+                            Text("☰", style = MaterialTheme.typography.headlineSmall)
+                        }
+                        DropdownMenu(
+                            expanded = menuExpanded,
+                            onDismissRequest = { menuExpanded = false },
+                        ) {
+                            navItems.forEach { item ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            item.label,
+                                            color = if (currentRoute == item.route)
+                                                MaterialTheme.colorScheme.primary
+                                            else
+                                                Color.Unspecified,
+                                        )
+                                    },
+                                    onClick = {
+                                        menuExpanded = false
+                                        onNavigate(item.route)
+                                    },
+                                )
+                            }
                         }
                     }
                 } else {
