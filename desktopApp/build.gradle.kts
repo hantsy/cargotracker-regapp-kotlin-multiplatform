@@ -26,10 +26,6 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "org.cargotracker.regapp"
             packageVersion = "1.0.0"
-
-            linux { iconFile.set(project.file("src/jvmMain/resources/logo.png")) }
-            windows { iconFile.set(project.file("src/jvmMain/resources/logo.png")) }
-            macOS { iconFile.set(project.file("src/jvmMain/resources/logo.png")) }
         }
     }
 }
