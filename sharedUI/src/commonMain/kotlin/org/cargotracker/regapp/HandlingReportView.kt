@@ -47,12 +47,12 @@ private fun DateTimePickerField(
         trailingIcon = {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 TextButton(onClick = { showDatePicker = true }) {
-                    MaterialIcon(MaterialIcons.DateRange, contentDescription = "Pick date", size = 18.dp)
+                    MaterialIcon(MaterialIcons.DateRange, contentDescription = "Pick date", size = 18.dp, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(4.dp))
                     Text("Date")
                 }
                 TextButton(onClick = { showTimePicker = true }) {
-                    MaterialIcon(MaterialIcons.Schedule, contentDescription = "Pick time", size = 18.dp)
+                    MaterialIcon(MaterialIcons.Schedule, contentDescription = "Pick time", size = 18.dp, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(4.dp))
                     Text("Time")
                 }
