@@ -24,11 +24,9 @@ This project reimplements the same functionality using Kotlin Multiplatform, tar
 
 **Web application (Edge browser)**
 
-![Screenshot](docs/kmp-web.png)
-
-**Web application (Edge browser) — alternative view**
-
 ![Screenshot](docs/kmp-web0.png)
+
+![Screenshot](docs/kmp-web.png)
 
 ## Project Structure
 
