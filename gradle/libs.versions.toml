@@ -11,7 +11,7 @@ android-targetSdk = "37"
 kotlinx-coroutines = "1.11.0"
 kotlinx-datetime = "0.8.0"
 navigation3 = "1.1.1"
-ktor = "3.5.1"
+ktor = "3.6.0"
 mockwebserver = "5.4.0"
 
 [libraries]
